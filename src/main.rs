@@ -12,4 +12,7 @@ fn main() {
     let mut e = Enemy::new("Turbul".to_string(), &instance);
     e.print_stats();
     e.damage(10.00);
+    e.print_stats();
+    e.heal(10.00);
+    e.print_stats();
 }

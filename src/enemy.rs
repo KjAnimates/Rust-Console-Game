@@ -30,7 +30,46 @@ pub struct Enemy<'a> {
     }
 
     pub fn heal(&mut self, amount: f32) {
-        
+        if self.health + amount > self._game.max_humanoid_health {
+            self.health = self._game.max_humanoid_health;
+            return;
+        }
+        self.health += amount;
     }
 
+}
+
+#[cfg(test)]
+mod enemy_testing {
+    use super::*;
+
+    #[test]
+    fn test_damage_works() {
+        let g = Game::new();
+        let mut e = Enemy::new("Tabul".to_string(), &g);
+
+        e.damage(50.00);
+
+        assert_eq!(e.health, 50.00);
+    }
+
+    #[test]
+    fn test_damage_reset_below_zero() {
+        let g = Game::new();
+
+        let mut e = Enemy::new("Tabul".to_string(), &g);
+        e.damage(500.00);
+
+        assert_eq!(e.health, 0.00);
+    }
+
+    #[test]
+    fn test_health_below_zero_kills_enemy() {
+        let g = Game::new();
+
+        let mut e = Enemy::new("Tabul".to_string(), &g);
+        e.damage(500.00);
+
+        assert_eq!(e.dead, true);
+    }
 }
